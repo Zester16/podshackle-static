@@ -11,6 +11,13 @@
 			align-items: center;
 		}
 
+		#footer{
+			position: fixed;
+			bottom: 0%;
+		}
+		#podcast_player{
+			padding:10px;
+		}
 		/* #audio_player {
 			visibility: hidden;
 		} */
@@ -29,8 +36,11 @@
 		</div>
 	</div>
 	<div id="footer">
-		<div id="current_time"></div>
+		<div id="podcast_player">
+			<div id="current_time"></div>
+		</div>
 	</div>
+
 	<div id="player">
 		<audio id="audio_player" controls>
 			<source id="audio_player">
@@ -65,9 +75,11 @@
 				const seconds = Math.trunc(currentTime%60)
 				return `${minutes}:${seconds}` 
 			}
+			//gets current playtime from media players
 			#getCurrentTime() {
 				return this.player.currentTime
 			}
+			//gets total play time from media player
 			#getPlayTime(){
 				return this.player.duration
 			}
