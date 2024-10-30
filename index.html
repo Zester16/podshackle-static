@@ -67,12 +67,16 @@
 			//sets playtime
 			setPlayerTime() {
 				this.playerTimeId = setInterval(() => {
-				const currentTime =this.getCurrentTime()
+				//const currentTime =this.getCurrentTime()
+				const currentPlaytime=this.#setPlayerTimeString(this.getCurrentTime())
+					this.audioTime.innerHTML = `${currentPlaytime} / ${this.#setPlayerTimeString(this.getPlayTime())}` 
+				}, 100)
+			}
+			#setPlayerTimeString(currentTime){
 				const currentTimeInSeconds =currentTime/60 
 				const minutes = Math.trunc(currentTimeInSeconds)
 				const seconds = Math.trunc(currentTime%60)
-					this.audioTime.innerHTML = `${minutes}:${seconds} / ${this.getPlayTime()}` 
-				}, 100)
+				return `${minutes}:${seconds}` 
 			}
 
 		}
