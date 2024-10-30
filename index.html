@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>PodShackle</title>
+	<style>
+		#body {
+			text-align: center;
+			align-items: center;
+		}
+
+		/* #audio_player {
+			visibility: hidden;
+		} */
+	</style>
+	<script>
+
+	</script>
+</head>
+
+<body>
+	<div id="header">
+	</div>
+	<div id="body">
+		<h1>This is PodShackle</h1>
+		<div id="version">
+		</div>
+	</div>
+	<div id="footer">
+		<div id="current_time"></div>
+	</div>
+	<div id="player">
+		<audio id="audio_player" controls>
+			<source id="audio_player">
+		</audio>
+	</div>
+
+	<script>
+		// initiates function using scoping
+		setVersion()
+
+		// music player class
+		class PodcastPlayer {
+
+			player = document.getElementById("audio_player")
+			audioTime = document.getElementById("current_time")
+			src = null
+			playtime = null
+
+			setSrc(inputSrc) {
+				this.player.src = inputSrc
+				this.src = inputSrc
+			}
+			play() {
+				this.player.play()
+				this.setPlayerTime()
+			}
+
+			getCurrentTime() {
+				return this.player.currentTime
+			}
+			getPlayTime(){
+				return this.player.duration
+			}
+			//sets playtime
+			setPlayerTime() {
+				this.playerTimeId = setInterval(() => {
+				const currentTime =this.getCurrentTime()
+				const currentTimeInSeconds =currentTime/60 
+				const minutes = Math.trunc(currentTimeInSeconds)
+				const seconds = Math.trunc(currentTime%60)
+					this.audioTime.innerHTML = `${minutes}:${seconds} / ${this.getPlayTime()}` 
+				}, 100)
+			}
+
+		}
+
+
+		// const audioPlayer = document.getElementById("audio_player")
+		// audioPlayer.src = "https://sphinx.acast.com/p/acast/s/ftnewsbriefing/e/659761a50f650a0017c0bf70/media.mp3"
+		// audioPlayer.play()
+		const podcastPlayer = new PodcastPlayer
+		podcastPlayer.setSrc("https://sphinx.acast.com/p/acast/s/ftnewsbriefing/e/659761a50f650a0017c0bf70/media.mp3")
+		podcastPlayer.play()
+
+
+		//***************AUXILIARY FUNCTIONS**************************
+		function setVersion() {
+			const docVersion = document.getElementById("version")
+			docVersion.innerHTML = "V 0.0.1"
+
+		}
+	</script>
+
+</body>
+
+</html>
