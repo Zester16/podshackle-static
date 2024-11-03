@@ -19,16 +19,16 @@
 		#podcast_player{
 			padding:10px;
 		}
-		.meter { 
+		#meter { 
   height: 20px;
-  width: 100%;
+  width: 90%;
   position: relative;
   background: #555;
   border-radius: 25px;
   padding: 10px;
   box-shadow: inset 0 -1px 1px rgba(255, 255, 255, 0.3);
 }
-.meter > span {
+#meter > span {
   display: block;
   height: 100%;
   border-top-right-radius: 8px;
@@ -65,7 +65,7 @@
 		</div>
 	</div>
 	<div id="footer">
-		<div class="meter">
+		<div id="meter">
 			<span id="progress_bar"></span>
 		</div>
 			
@@ -84,7 +84,17 @@
 	<script>
 		// initiates function using scoping
 		setVersion()
+		const meter = document.getElementById("meter")
+		const progressBar = document.getElementById("progress_bar")
+		meter.addEventListener("click",(event)=>{
+			const totalWidth = meter.offsetWidth
+			const clickedWidth = event.clientX
+			const percentage = (clickedWidth/totalWidth)*100
 
+				console.log(event)
+				progressBar.style.width=`${percentage}%`
+				podcastPlayer.setPlayerTime(percentage)
+			})
 		// music player class
 		class PodcastPlayer {
 
@@ -100,9 +110,12 @@
 			}
 			play() {
 				this.player.play()
-				this.#setPlayerTime()
+				this.#setPlayerDisplayTime()
 			}
 			
+			setPlayerTime(percentage){
+				this.player.currentTime = (this.#getPlayTime()*percentage)/100
+			}
 			//auxilary private functions accessible only for class
 			#setPlayerTimeString(currentTime){
 				const currentTimeInSeconds =currentTime/60 
@@ -119,7 +132,7 @@
 				return this.player.duration
 			}
 			//sets playtime
-			#setPlayerTime() {
+			#setPlayerDisplayTime() {
 				this.playerTimeId = setInterval(() => {
 				//const currentTime =this.getCurrentTime()
 				const getTimeP = (this.#getCurrentTime()/this.#getPlayTime())*100
@@ -144,7 +157,7 @@
 		//***************AUXILIARY FUNCTIONS**************************
 		function setVersion() {
 			const docVersion = document.getElementById("version")
-			docVersion.innerHTML = "V 0.0.1"
+			docVersion.innerHTML = "V 0.0.3"
 
 		}
 	</script>
