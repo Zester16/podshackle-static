@@ -97,9 +97,12 @@
 		</audio>
 	</div>
 
+	<script src="./scripts/podcastpull.js" ></script>
 	<script>
 		// initiates function using scoping
 		setVersion()
+		const podcastList=getPodcastDataXML()
+		console.log("at main page",podcastList)
 		const idObject = {meter:"meter",progressBar:"progress_bar",playButton:"play_button"}
 		const meter = document.getElementById("meter")
 		const progressBar = document.getElementById("progress_bar")
@@ -182,7 +185,7 @@
 		//***************AUXILIARY FUNCTIONS**************************
 		function setVersion() {
 			const docVersion = document.getElementById("version")
-			docVersion.innerHTML = "V 0.0.4"
+			docVersion.innerHTML = "V 0.0.5"
 
 		}
 	</script>
