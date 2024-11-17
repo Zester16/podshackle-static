@@ -1,14 +1,17 @@
 const podcastStub={"date":"",title:"",description:"",url:"",id:""}
 function getPodcastDataXML(inputUrl,podcastName){
-    const url= "https://rss.dw.com/xml/podcast_inside-europe"
-    const request = new XMLHttpRequest();
-    request.open("GET",url)
-    request.onload=function(){
-        //console.log(request.response)
-        const podcastList=parsePodcastXML(request.response,podcastName)
-        return podcastList
-    }
-    request.send()
+    return new Promise((resolve,reject)=>{
+        const url= "https://rss.dw.com/xml/podcast_inside-europe"
+        const request = new XMLHttpRequest();
+        request.open("GET",url)
+        request.onload=function(){
+            //console.log(request.response)
+            const podcastList=parsePodcastXML(request.response,podcastName)
+            resolve(podcastList) 
+        }
+        request.send()
+    })
+
 
 }
 
@@ -20,9 +23,9 @@ function parsePodcastXML(data,podcastName){
     const podcasts=[]
     for(let i=0;i<nodes.length;i++){
         console.log( xmlDoc.getElementsByTagName("item")[i])
-        const date = xmlDoc.getElementsByTagName("item")[i].childNodes[3].lastChild
-        const title = xmlDoc.getElementsByTagName("item")[i].childNodes[5].lastChild
-        const description = xmlDoc.getElementsByTagName("item")[i].childNodes[9].lastChild
+        const date = xmlDoc.getElementsByTagName("item")[i].childNodes[3].lastChild.nodeValue
+        const title = xmlDoc.getElementsByTagName("item")[i].childNodes[5].lastChild.nodeValue
+        const description = xmlDoc.getElementsByTagName("item")[i].childNodes[9].lastChild.nodeValue
         const url = xmlDoc.getElementsByTagName("item")[i].childNodes[19].attributes["url"].nodeValue
         const newPod = {...podcastStub}
 
