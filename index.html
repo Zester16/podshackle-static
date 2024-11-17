@@ -13,7 +13,7 @@
 		#header{
 			display: flex;
 			width: 0 auto;
-			background-color:#7FFF00;
+			/* background-color:#7FFF00; */
 		}
 		#body {
 			margin-top: 10px;
@@ -25,6 +25,9 @@
 			position: fixed;
 			bottom: 0%;
 			width: 100%;
+			margin-right:4px;
+			background-color: rgb(0, 255, 170);
+			visibility: collapse;
 		}
 		#podcast_player{
 			padding:10px;
@@ -34,12 +37,13 @@
 			height:60px;
 		}
 		#meter { 
-			height: 20px;
-			width: 90%;
+			height: 4px;
+			/* width: 90%; */
 			position: relative;
 			background: #555;
 			border-radius: 25px;
-			padding: 10px;
+			margin-right: 4px;
+			/* padding: 10px; */
 			box-shadow: inset 0 -1px 1px rgba(255, 255, 255, 0.3);
 		}
 			#meter > span {
@@ -62,9 +66,9 @@
 			overflow: hidden;
 			}
 
-		/* #audio_player {
-			visibility: hidden;
-		} */
+		#player {
+			visibility: collapse;
+		}
 	</style>
 	<script>
 
@@ -85,6 +89,11 @@
 		<div id="version">
 		</div>
 	</div>
+	<div id="player">
+		<audio id="audio_player" type="audio/mpeg" controls>
+			<source id="audio_player">
+		</audio>
+	</div>
 	<div id="footer">
 		<div id="meter">
 			<span id="progress_bar"></span>
@@ -93,44 +102,53 @@
 		<div id="podcast_player">
 			<div id="current_time"></div>
 		</div>
-		<div><button id="play_button">Play</button></div>
+		<div><button id="player_play_button">Play</button></div>
 	</div>
 
-	<div id="player">
-		<audio id="audio_player" type="audio/mpeg" controls>
-			<source id="audio_player">
-		</audio>
-	</div>
+
 
 	<script src="./scripts/podcastpull.js" ></script>
 	<script>
 		// initiates function using scoping
 
 		
-		const idObject = {meter:"meter",progressBar:"progress_bar",playButton:"play_button",podcastList:"podcast_list",controlButton:"control_button"}
+		const idObject = {footer:"footer",meter:"meter",progressBar:"progress_bar",playButton:"play_button",podcastList:"podcast_list",controlButton:"control_button",audioPlayer:"audio_player",currentTime:"current_time",playerPlatButton:"player_play_button"}
+		const footer = document.getElementById(idObject.footer)
 		const meter = document.getElementById("meter")
 		const progressBar = document.getElementById("progress_bar")
 		const playButton = document.getElementsByClassName(idObject.playButton)
 		const podcastListDiv = document.getElementById(idObject.podcastList)
+		const playerPlayButton = document.getElementById(idObject.playerPlatButton)
 		let podcastList=[]
 		
 		// music player class
 		class PodcastPlayer {
 
-			player = document.getElementById("audio_player")
-			audioTime = document.getElementById("current_time")
-			progressBar = document.getElementById("progress_bar")
+			player = document.getElementById(idObject.audioPlayer)
+			audioTime = document.getElementById(idObject.currentTime)
+			progressBar = document.getElementById(idObject.progressBar)
+			//playerPlayButton = document.getElementById(idObject.playerPlatButton)
 			src = null
 			playtime = null
-
+			
 			setSrc(inputSrc) {
 				this.player.src = inputSrc
 				this.src = inputSrc
 				this.play()
+				footer.style.visibility="visible"
 			}
 			play() {
 				this.player.play()
 				this.#setPlayerDisplayTime()
+			}
+
+			togglePlay(){
+				if(this.player.paused){
+					this.player.play()
+				}
+				else{
+					this.player.pause()
+				}
 			}
 			
 			setPlayerTime(percentage){
@@ -162,8 +180,6 @@
 					this.audioTime.innerHTML = `${currentPlaytime} / ${this.#setPlayerTimeString(this.#getPlayTime())}` 
 				}, 100)
 			}
-
-
 		}
 
 
@@ -182,15 +198,20 @@
 			const clickedWidth = event.clientX
 			const percentage = (clickedWidth/totalWidth)*100
 
-				console.log(event)
+				//console.log(event)
 				progressBar.style.width=`${percentage}%`
 				podcastPlayer.setPlayerTime(percentage)
 			})
+		
+		playerPlayButton.addEventListener("click",()=>{
+						podcastPlayer.togglePlay()
+				})
+				
 
 		//***************AUXILIARY FUNCTIONS**************************
 		function setVersion() {
 			const docVersion = document.getElementById("version")
-			docVersion.innerHTML = "V 0.0.5B"
+			docVersion.innerHTML = "V 0.0.5C"
 
 		}
 		//sets podcasts
@@ -216,8 +237,7 @@
 				playButton[i].addEventListener("click",(event)=>{
 					let podcast = podcastList[i]
 					const url = podcast.url
-					alert(podcast.id)
-					//const url="https://sphinx.acast.com/p/acast/s/ftnewsbriefing/e/659761a50f650a0017c0bf70/media.mp3"
+					//alert(podcast.id)
 				podcastPlayer.setSrc(url)
 			//podcastPlayer.play()
 		})
