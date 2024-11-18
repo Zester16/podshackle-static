@@ -22,7 +22,7 @@ function parsePodcastXML(data,podcastName){
     //console.log(nodes)
     const podcasts=[]
     for(let i=0;i<nodes.length;i++){
-        console.log( xmlDoc.getElementsByTagName("item")[i])
+        //console.log( xmlDoc.getElementsByTagName("item")[i])
         const date = xmlDoc.getElementsByTagName("item")[i].childNodes[3].lastChild.nodeValue
         const title = xmlDoc.getElementsByTagName("item")[i].childNodes[5].lastChild.nodeValue
         const description = xmlDoc.getElementsByTagName("item")[i].childNodes[9].lastChild.nodeValue

@@ -26,7 +26,7 @@
 			bottom: 0%;
 			width: 100%;
 			margin-right:4px;
-			background-color: rgb(0, 255, 170);
+			background-color: rgb(240, 255, 50);
 			visibility: collapse;
 		}
 		#podcast_player{
@@ -100,7 +100,7 @@
 		</div>
 			
 		<div id="podcast_player">
-			<div id="current_time"></div>
+			<div id="current_time"></div><div id="whats_now_playing"></div>
 		</div>
 		<div><button id="player_play_button">Play</button></div>
 	</div>
@@ -112,13 +112,14 @@
 		// initiates function using scoping
 
 		
-		const idObject = {footer:"footer",meter:"meter",progressBar:"progress_bar",playButton:"play_button",podcastList:"podcast_list",controlButton:"control_button",audioPlayer:"audio_player",currentTime:"current_time",playerPlatButton:"player_play_button"}
+		const idObject = {footer:"footer",meter:"meter",progressBar:"progress_bar",playButton:"play_button",podcastList:"podcast_list",controlButton:"control_button",audioPlayer:"audio_player",currentTime:"current_time",playerPlatButton:"player_play_button",whatsNowPlaying:"whats_now_playing"}
 		const footer = document.getElementById(idObject.footer)
 		const meter = document.getElementById("meter")
 		const progressBar = document.getElementById("progress_bar")
 		const playButton = document.getElementsByClassName(idObject.playButton)
 		const podcastListDiv = document.getElementById(idObject.podcastList)
 		const playerPlayButton = document.getElementById(idObject.playerPlatButton)
+		const whatsNowPlayingDiv=document.getElementById(idObject.whatsNowPlaying)
 		let podcastList=[]
 		
 		// music player class
@@ -127,13 +128,16 @@
 			player = document.getElementById(idObject.audioPlayer)
 			audioTime = document.getElementById(idObject.currentTime)
 			progressBar = document.getElementById(idObject.progressBar)
+			whatsNowPlaying=document.getElementById(idObject.whatsNowPlaying)
 			//playerPlayButton = document.getElementById(idObject.playerPlatButton)
 			src = null
 			playtime = null
 			
-			setSrc(inputSrc) {
-				this.player.src = inputSrc
-				this.src = inputSrc
+			setSrc(podcast) {
+				footer.style.visibility="collapse"
+				this.player.src = podcast.url
+				this.src = podcast.url
+				this.#setWhatsNowPlaying(podcast.title)
 				this.play()
 				footer.style.visibility="visible"
 			}
@@ -180,6 +184,9 @@
 					this.audioTime.innerHTML = `${currentPlaytime} / ${this.#setPlayerTimeString(this.#getPlayTime())}` 
 				}, 100)
 			}
+			#setWhatsNowPlaying(nowPlaying){
+				whatsNowPlayingDiv.innerHTML=nowPlaying
+			}
 		}
 
 
@@ -211,7 +218,7 @@
 		//***************AUXILIARY FUNCTIONS**************************
 		function setVersion() {
 			const docVersion = document.getElementById("version")
-			docVersion.innerHTML = "V 0.0.5C"
+			docVersion.innerHTML = "V 0.0.5D"
 
 		}
 		//sets podcasts
@@ -238,7 +245,7 @@
 					let podcast = podcastList[i]
 					const url = podcast.url
 					//alert(podcast.id)
-				podcastPlayer.setSrc(url)
+				podcastPlayer.setSrc(podcast)
 			//podcastPlayer.play()
 		})
 		
