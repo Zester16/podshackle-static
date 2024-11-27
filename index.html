@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PodShackle</title>
     <style>
-      	body {
+      body {
         margin: 0;
       }
       #header {
@@ -62,7 +62,17 @@
         position: relative;
         overflow: hidden;
       }
+      .station_image {
+        max-width: 200px;
+        max-height: 200px;
+      }
 
+      .collapse {
+        visibility: collapse;
+      }
+      .visible {
+        visibility: visible;
+      }
       #player {
         visibility: collapse;
       }
@@ -75,7 +85,7 @@
       <img src="./src/podshackle_2.webp" id="brand_logo" />
     </div>
     <div id="body">
-      <div id="podcasts_name"></div>
+      <div id="podcast_station"></div>
       <div id="podcast_list"></div>
       <div id="version"></div>
     </div>
@@ -96,6 +106,7 @@
       <div><button id="player_play_button">Play</button></div>
     </div>
 
+    <script src="./datasource/podcastStations.js"></script>
     <script src="./scripts/podcastpull.js"></script>
     <script src="./scripts/podcastPlayer.js"></script>
     <script>

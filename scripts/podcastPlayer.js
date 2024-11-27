@@ -3,6 +3,7 @@ const idObject = {
   meter: "meter",
   progressBar: "progress_bar",
   playButton: "play_button",
+  podcastStation: "podcast_station",
   podcastList: "podcast_list",
   controlButton: "control_button",
   audioPlayer: "audio_player",
@@ -10,10 +11,15 @@ const idObject = {
   playerPlatButton: "player_play_button",
   whatsNowPlaying: "whats_now_playing",
 };
+
+const classListObject = {
+  stationImage: "station_image",
+};
 const footer = document.getElementById(idObject.footer);
 const meter = document.getElementById("meter");
 const progressBar = document.getElementById("progress_bar");
 const playButton = document.getElementsByClassName(idObject.playButton);
+const podcastStationDiv = document.getElementById(idObject.podcastStation);
 const podcastListDiv = document.getElementById(idObject.podcastList);
 const playerPlayButton = document.getElementById(idObject.playerPlatButton);
 const whatsNowPlayingDiv = document.getElementById(idObject.whatsNowPlaying);
@@ -106,10 +112,25 @@ playerPlayButton.addEventListener("click", () => {
 //***************AUXILIARY FUNCTIONS**************************
 function setVersion() {
   const docVersion = document.getElementById("version");
-  docVersion.innerHTML = "V 0.0.5D";
+  docVersion.innerHTML = "V 0.0.6";
+}
+
+function setpodcastStations() {
+  podcastStations.forEach((station) => {
+    const newDiv = document.createElement("div");
+    const nameDiv = document.createElement("div");
+    nameDiv.innerHTML = station.id;
+    const imgDiv = document.createElement("img");
+    imgDiv.src = station.logo;
+    imgDiv.classList.add(classListObject.stationImage);
+    newDiv.appendChild(nameDiv);
+    newDiv.appendChild(imgDiv);
+
+    podcastStationDiv.appendChild(newDiv);
+  });
 }
 //sets podcasts
-async function getPodcasts() {
+async function getPodcasts(url) {
   podcastList = await getPodcastDataXML();
   podcastList.forEach((podcast) => {
     const newDiv = document.createElement("div");
@@ -139,4 +160,5 @@ async function getPodcasts() {
 }
 
 setVersion();
+setpodcastStations();
 getPodcasts();
