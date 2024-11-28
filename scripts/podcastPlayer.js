@@ -10,6 +10,8 @@ const idObject = {
   currentTime: "current_time",
   playerPlatButton: "player_play_button",
   whatsNowPlaying: "whats_now_playing",
+  podcastListDiv: "podcast_list_div",
+  closeDivButton: "pld_close",
 };
 
 const classListObject = {
@@ -22,6 +24,7 @@ const classListObject = {
 const cssVisibility = {
   visible: "visible",
   collapse: "collapse",
+  hidden: "hidden",
 };
 
 const footer = document.getElementById(idObject.footer);
@@ -32,6 +35,8 @@ const podcastStationDiv = document.getElementById(idObject.podcastStation);
 const podcastListDiv = document.getElementById(idObject.podcastList);
 const playerPlayButton = document.getElementById(idObject.playerPlatButton);
 const whatsNowPlayingDiv = document.getElementById(idObject.whatsNowPlaying);
+const closeButton = document.getElementById(idObject.closeDivButton);
+
 let podcastList = [];
 
 // music player class
@@ -100,8 +105,25 @@ class PodcastPlayer {
     whatsNowPlayingDiv.innerHTML = nowPlaying;
   }
 }
+class ViewHolder {
+  _podcastListMasterDiv = document.getElementById(idObject.podcastListDiv);
+  constructor() {}
 
+  showPodcastList() {
+    podcastStationDiv.style.visibility = cssVisibility.collapse;
+    podcastStationDiv.style.height = 0;
+    podcastListDiv.style.visibility = cssVisibility.visible;
+    podcastListDiv.style.height = "auto";
+  }
+  moveBack() {
+    podcastStationDiv.style.visibility = cssVisibility.visible;
+    podcastStationDiv.style.height = "auto";
+    podcastListDiv.style.visibility = cssVisibility.collapse;
+    podcastListDiv.style.height = 0;
+  }
+}
 const podcastPlayer = new PodcastPlayer();
+const viewHolder = new ViewHolder();
 
 //for setting scroll state
 meter.addEventListener("click", (event) => {
@@ -118,10 +140,13 @@ playerPlayButton.addEventListener("click", () => {
   podcastPlayer.togglePlay();
 });
 
+closeButton.addEventListener("click", () => {
+  viewHolder.moveBack();
+});
 //***************AUXILIARY FUNCTIONS**************************
 function setVersion() {
   const docVersion = document.getElementById("version");
-  docVersion.innerHTML = "V 0.0.6B";
+  docVersion.innerHTML = "V 0.0.7A";
 }
 
 function setpodcastStations() {
@@ -188,7 +213,8 @@ async function getPodcasts(url) {
       //podcastPlayer.play()
     });
   }
-  podcastListDiv.style.visibility = cssVisibility.visible;
+  //podcastListDiv.style.visibility = cssVisibility.visible;
+  viewHolder.showPodcastList();
 }
 
 setVersion();
