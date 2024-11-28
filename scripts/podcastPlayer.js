@@ -14,7 +14,16 @@ const idObject = {
 
 const classListObject = {
   stationImage: "station_image",
+  podStationButton: "pod_station_button",
+  visible: "visible",
+  collapse: "collapse",
 };
+
+const cssVisibility = {
+  visible: "visible",
+  collapse: "collapse",
+};
+
 const footer = document.getElementById(idObject.footer);
 const meter = document.getElementById("meter");
 const progressBar = document.getElementById("progress_bar");
@@ -112,26 +121,48 @@ playerPlayButton.addEventListener("click", () => {
 //***************AUXILIARY FUNCTIONS**************************
 function setVersion() {
   const docVersion = document.getElementById("version");
-  docVersion.innerHTML = "V 0.0.6";
+  docVersion.innerHTML = "V 0.0.6B";
 }
 
 function setpodcastStations() {
   podcastStations.forEach((station) => {
     const newDiv = document.createElement("div");
     const nameDiv = document.createElement("div");
-    nameDiv.innerHTML = station.id;
+    //set name
+    nameDiv.innerHTML = station.name;
+    //set image
     const imgDiv = document.createElement("img");
     imgDiv.src = station.logo;
     imgDiv.classList.add(classListObject.stationImage);
+
+    const button = document.createElement("button");
+    button.innerHTML = "play";
+    button.classList.add(classListObject.podStationButton);
+
+    //append objects
     newDiv.appendChild(nameDiv);
     newDiv.appendChild(imgDiv);
-
+    newDiv.appendChild(button);
     podcastStationDiv.appendChild(newDiv);
   });
+
+  const podStationButton = document.getElementsByClassName(
+    classListObject.podStationButton
+  );
+
+  for (let i = 0; i < podStationButton.length; i++) {
+    podStationButton[i].addEventListener("click", (event) => {
+      let podcastStation = podcastStations[i];
+      const url = podcastStation.url;
+      //alert(podcast.id)
+      getPodcasts(url);
+      //podcastPlayer.play()
+    });
+  }
 }
 //sets podcasts
 async function getPodcasts(url) {
-  podcastList = await getPodcastDataXML();
+  podcastList = await getPodcastDataXML(url);
   podcastList.forEach((podcast) => {
     const newDiv = document.createElement("div");
     const header = document.createElement("h1");
@@ -157,8 +188,9 @@ async function getPodcasts(url) {
       //podcastPlayer.play()
     });
   }
+  podcastListDiv.style.visibility = cssVisibility.visible;
 }
 
 setVersion();
 setpodcastStations();
-getPodcasts();
+//getPodcasts();
