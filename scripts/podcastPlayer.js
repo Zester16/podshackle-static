@@ -136,19 +136,20 @@ meter.addEventListener("click", (event) => {
   podcastPlayer.setPlayerTime(percentage);
 });
 
+//to toggle play on and off
 playerPlayButton.addEventListener("click", () => {
   podcastPlayer.togglePlay();
 });
-
+//moves back from podcast episodes to poscastStation
 closeButton.addEventListener("click", () => {
   viewHolder.moveBack();
 });
 //***************AUXILIARY FUNCTIONS**************************
 function setVersion() {
   const docVersion = document.getElementById("version");
-  docVersion.innerHTML = "V 0.0.7A";
+  docVersion.innerHTML = "V 0.0.7B";
 }
-
+//sets podcast stations, aka main stations with images, like inside europe
 function setpodcastStations() {
   podcastStations.forEach((station) => {
     const newDiv = document.createElement("div");
@@ -185,9 +186,10 @@ function setpodcastStations() {
     });
   }
 }
-//sets podcasts
+//sets podcasts list aka each episodes
 async function getPodcasts(url) {
   podcastList = await getPodcastDataXML(url);
+  podcastListDiv.replaceChildren(); //removes old podccasts. needs to be checked in other browsers
   podcastList.forEach((podcast) => {
     const newDiv = document.createElement("div");
     const header = document.createElement("h1");
@@ -198,7 +200,6 @@ async function getPodcasts(url) {
     button.innerText = "Play Now";
     newDiv.appendChild(header);
     newDiv.appendChild(button);
-
     podcastListDiv.appendChild(newDiv);
   });
   //console.log(playButton)
