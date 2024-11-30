@@ -119,7 +119,7 @@ class ViewHolder {
     podcastStationDiv.style.visibility = cssVisibility.visible;
     podcastStationDiv.style.height = "auto";
     podcastListDiv.style.visibility = cssVisibility.collapse;
-    podcastListDiv.style.height = 0;
+    podcastListDiv.replaceChildren();
   }
 }
 const podcastPlayer = new PodcastPlayer();
@@ -147,7 +147,7 @@ closeButton.addEventListener("click", () => {
 //***************AUXILIARY FUNCTIONS**************************
 function setVersion() {
   const docVersion = document.getElementById("version");
-  docVersion.innerHTML = "V 0.0.7B";
+  docVersion.innerHTML = "V 0.0.7C";
 }
 //sets podcast stations, aka main stations with images, like inside europe
 function setpodcastStations() {
