@@ -7,11 +7,13 @@
     <style>
       body {
         margin: 0;
+        background-color: #f0e130;
       }
       #header {
         display: flex;
         width: 0 auto;
         /* background-color:#7FFF00; */
+        background: #262a33;
       }
       #body {
         margin-top: 10px;
@@ -33,6 +35,7 @@
       #brand_logo {
         width: max-content;
         height: 60px;
+        padding: 10px;
       }
       #meter {
         height: 4px;
@@ -43,6 +46,7 @@
         margin-right: 4px;
         /* padding: 10px; */
         box-shadow: inset 0 -1px 1px rgba(255, 255, 255, 0.3);
+        cursor: pointer;
       }
       #meter > span {
         display: block;
@@ -61,16 +65,22 @@
           inset 0 -2px 6px rgba(0, 0, 0, 0.4);
         position: relative;
         overflow: hidden;
+        cursor: pointer;
       }
       .station_image {
         max-width: 200px;
         max-height: 200px;
+        border-radius: 30px;
+      }
+      #podcast_station {
+        display: flex;
       }
       #podcast_list {
         visibility: collapse;
       }
       #odcast_list_div {
         visibility: collapse;
+        display: flex;
       }
       .collapse {
         visibility: collapse;
