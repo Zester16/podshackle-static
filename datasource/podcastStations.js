@@ -17,5 +17,11 @@ const podcastStations = [
     logo: "https://megaphone.imgix.net/podcasts/3c37d102-0c70-11ef-9f2a-d3c80df1fc79/image/e23a1724ac8f5dc3f1fdc335e97c6222.jpg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
     url: "https://feeds.megaphone.fm/reuterseconworld",
   },
+  {
+    id: "imf_podcast",
+    name: "imf podcast",
+    logo: "https://static.libsyn.com/p/assets/a/3/5/2/a35221e0f440750a/1400x1400-Libsyn-podcast_1.jpg",
+    url: "https://imfpodcast.libsyn.com/rss",
+  },
 ];
-//https://feeds.megaphone.fm/reuterseconworld
+//https://imfpodcast.libsyn.com/rss

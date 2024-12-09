@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PodShackle</title>
+    <title>podShackle</title>
+    <link rel="icon" type="image/x-icon" href="./src/favicon.ico" />
     <style>
       body {
         margin: 0;
@@ -14,6 +15,7 @@
         width: 0 auto;
         /* background-color:#7FFF00; */
         background: #262a33;
+        padding: 4px;
       }
       #body {
         margin-top: 10px;
@@ -32,10 +34,13 @@
       #podcast_player {
         padding: 10px;
       }
-      #brand_logo {
+      #brand_logo_word {
         width: max-content;
         height: 60px;
         padding: 10px;
+      }
+      #brand_logo {
+        max-width: 45px;
       }
       #meter {
         height: 4px;
@@ -91,13 +96,21 @@
       #player {
         visibility: collapse;
       }
+
+      /* add media query */
+      @media (max-width: 600px) {
+        #podcast_station {
+          display: block;
+        }
+      }
     </style>
     <script></script>
   </head>
 
   <body>
     <div id="header">
-      <img src="./src/podshackle_2.webp" id="brand_logo" />
+      <img preload="true" src="./src/podshackle_logo.svg" id="brand_logo" />
+      <img src="./src/podshackle_2.webp" id="brand_logo_word" />
     </div>
     <div id="body">
       <div id="podcast_station"></div>
