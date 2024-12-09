@@ -23,5 +23,11 @@ const podcastStations = [
     logo: "https://static.libsyn.com/p/assets/a/3/5/2/a35221e0f440750a/1400x1400-Libsyn-podcast_1.jpg",
     url: "https://imfpodcast.libsyn.com/rss",
   },
+  {
+    id: "wsj_journal",
+    name: "WSJ The Journal",
+    logo: "https://megaphone.imgix.net/podcasts/b84f9932-8174-11e9-bbd8-7f261513f0c9/image/Spotify_The-Journal_Key-Art_3000x3000.jpg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
+    url: "https://video-api.wsj.com/podcast/rss/wsj/the-journal",
+  },
 ];
-//https://imfpodcast.libsyn.com/rss
+//https://video-api.wsj.com/podcast/rss/wsj/the-journal
