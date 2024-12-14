@@ -17,6 +17,10 @@ function parsePodcastXML(data, podcastName) {
   const parser = new DOMParser();
   const xmlDoc = parser.parseFromString(data, "application/xml");
   const nodes = xmlDoc.getElementsByTagName("item");
+  const pubDate = xmlDoc.getElementsByTagName("pubDate");
+
+  const delta = pubDate.length - nodes.length;
+  console.log("delta", delta);
   //console.log(nodes)
   const podcasts = [];
 
@@ -47,11 +51,12 @@ function parsePodcastXML(data, podcastName) {
   //   }
   // } else {
   for (let i = 0; i < nodes.length; i++) {
-    const date = xmlDoc.getElementsByTagName("pubDate")[i].lastChild.nodeValue;
+    const date =
+      xmlDoc.getElementsByTagName("pubDate")[i + delta]?.lastChild?.nodeValue;
     const title =
       xmlDoc.getElementsByTagName("title")[i + 2].lastChild.nodeValue;
     const description =
-      xmlDoc.getElementsByTagName("description")[i].lastChild.nodeValue;
+      xmlDoc.getElementsByTagName("description")[i + 1].lastChild.nodeValue;
     const url =
       xmlDoc.getElementsByTagName("enclosure")[i].attributes["url"].nodeValue;
     const newPod = { ...podcastStub };

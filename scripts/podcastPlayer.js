@@ -19,6 +19,7 @@ const classListObject = {
   podStationButton: "pod_station_button",
   visible: "visible",
   collapse: "collapse",
+  podcast: "podcast",
 };
 
 const cssVisibility = {
@@ -112,12 +113,14 @@ class ViewHolder {
   showPodcastList() {
     podcastStationDiv.style.visibility = cssVisibility.collapse;
     podcastStationDiv.style.height = 0;
+    closeButton.style.visibility = cssVisibility.visible;
     podcastListDiv.style.visibility = cssVisibility.visible;
     podcastListDiv.style.height = "auto";
   }
   moveBack() {
     podcastStationDiv.style.visibility = cssVisibility.visible;
     podcastStationDiv.style.height = "auto";
+    closeButton.style.visibility = cssVisibility.collapse;
     podcastListDiv.style.visibility = cssVisibility.collapse;
     podcastListDiv.replaceChildren();
   }
@@ -147,7 +150,7 @@ closeButton.addEventListener("click", () => {
 //***************AUXILIARY FUNCTIONS**************************
 function setVersion() {
   const docVersion = document.getElementById("version");
-  docVersion.innerHTML = "V 0.0.8C";
+  docVersion.innerHTML = "V 0.0.8D";
 }
 //sets podcast stations, aka main stations with images, like inside europe
 function setpodcastStations() {
@@ -192,14 +195,34 @@ async function getPodcasts(url) {
   podcastListDiv.replaceChildren(); //removes old podccasts. needs to be checked in other browsers
   podcastList.forEach((podcast) => {
     const newDiv = document.createElement("div");
-    const header = document.createElement("h1");
+    const header = document.createElement("h2");
+    const contentDiv = document.createElement("div");
+
+    //add title
     header.innerHTML = podcast.title;
+
+    //add play button logic
     const button = document.createElement("button");
     button.classList.add(idObject.playButton);
     button.id = podcast.id;
     button.innerText = "Play Now";
+
+    //add play date and description
+    const contentDescription = document.createElement("span");
+    contentDescription.innerHTML = podcast.description;
+
+    const contentDate = document.createElement("span");
+    contentDate.innerHTML = podcast.date;
+
+    //append content childrent to content div
+    contentDiv.appendChild(contentDescription);
+    contentDiv.appendChild(contentDate);
+    //append major items to newDiv
     newDiv.appendChild(header);
     newDiv.appendChild(button);
+    newDiv.appendChild(contentDiv);
+
+    newDiv.classList.add(classListObject.podcast);
     podcastListDiv.appendChild(newDiv);
   });
   //console.log(playButton)
