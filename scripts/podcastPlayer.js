@@ -113,12 +113,14 @@ class ViewHolder {
   showPodcastList() {
     podcastStationDiv.style.visibility = cssVisibility.collapse;
     podcastStationDiv.style.height = 0;
+    closeButton.style.visibility = cssVisibility.visible;
     podcastListDiv.style.visibility = cssVisibility.visible;
     podcastListDiv.style.height = "auto";
   }
   moveBack() {
     podcastStationDiv.style.visibility = cssVisibility.visible;
     podcastStationDiv.style.height = "auto";
+    closeButton.style.visibility = cssVisibility.collapse;
     podcastListDiv.style.visibility = cssVisibility.collapse;
     podcastListDiv.replaceChildren();
   }
