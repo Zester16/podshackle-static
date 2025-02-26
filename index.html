@@ -29,6 +29,11 @@
         background: #262a33;
         padding: 4px;
       }
+      body::before {
+        content: url("./src/play_arrow.svg");
+        content: url("./src/pause.svg");
+        display: none;
+      }
       #body {
         margin-top: 10px;
         text-align: center;
@@ -102,6 +107,12 @@
         visibility: collapse;
         padding: 10px;
       }
+      #player_play_button {
+        background-color: #262a33;
+        border-radius: 50%;
+        width: 30px;
+        margin: 5px;
+      }
       .podcast {
         box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
         padding: 10px;
@@ -163,7 +174,14 @@
         <div id="current_time"></div>
         <div id="whats_now_playing"></div>
       </div>
-      <div><button id="player_play_button">Pause</button></div>
+      <div>
+        <input
+          id="player_play_button"
+          rel="preload"
+          type="image"
+          src="./src/pause.svg"
+        />
+      </div>
     </div>
 
     <script src="./datasource/podcastStations.js"></script>
