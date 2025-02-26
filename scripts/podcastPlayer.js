@@ -152,7 +152,7 @@ closeButton.addEventListener("click", () => {
 //***************AUXILIARY FUNCTIONS**************************
 function setVersion() {
   const docVersion = document.getElementById("version");
-  docVersion.innerHTML = "V 0.0.8E";
+  docVersion.innerHTML = "V 0.0.8F";
 }
 //sets podcast stations, aka main stations with images, like inside europe
 function setpodcastStations() {
@@ -204,10 +204,13 @@ async function getPodcasts(url) {
     header.innerHTML = podcast.title;
 
     //add play button logic
-    const button = document.createElement("button");
+    const button = document.createElement("input");
+    button.setAttribute("rel", "prefetch");
+    button.setAttribute("type", "image");
+    button.src = "./src/play_arrow.svg";
     button.classList.add(idObject.playButton);
     button.id = podcast.id;
-    button.innerText = "Play Now";
+    //button.innerText = "Play Now";
 
     //add play date and description
     const contentDescription = document.createElement("span");
