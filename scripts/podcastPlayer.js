@@ -65,10 +65,10 @@ class PodcastPlayer {
 
   togglePlay() {
     if (this.player.paused) {
-      playerPlayButton.innerHTML = "Pause";
+      playerPlayButton.src = "./src/pause.svg";
       this.player.play();
     } else {
-      playerPlayButton.innerHTML = "Play";
+      playerPlayButton.src = "./src/play_arrow.svg";
       this.player.pause();
     }
   }
@@ -152,7 +152,7 @@ closeButton.addEventListener("click", () => {
 //***************AUXILIARY FUNCTIONS**************************
 function setVersion() {
   const docVersion = document.getElementById("version");
-  docVersion.innerHTML = "V 0.0.8F";
+  docVersion.innerHTML = "V 0.0.8G";
 }
 //sets podcast stations, aka main stations with images, like inside europe
 function setpodcastStations() {
