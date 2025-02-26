@@ -104,10 +104,12 @@
       }
       .podcast {
         box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-        display: flex;
-        flex-wrap: wrap;
         padding: 10px;
         margin: 10px;
+      }
+      .play_button {
+        background-color: #262a33;
+        border-radius: 50%;
       }
       .collapse {
         visibility: collapse;
@@ -161,7 +163,7 @@
         <div id="current_time"></div>
         <div id="whats_now_playing"></div>
       </div>
-      <div><button id="player_play_button">Play</button></div>
+      <div><button id="player_play_button">Pause</button></div>
     </div>
 
     <script src="./datasource/podcastStations.js"></script>
