@@ -65,8 +65,10 @@ class PodcastPlayer {
 
   togglePlay() {
     if (this.player.paused) {
+      playerPlayButton.innerHTML = "Pause";
       this.player.play();
     } else {
+      playerPlayButton.innerHTML = "Play";
       this.player.pause();
     }
   }
@@ -150,7 +152,7 @@ closeButton.addEventListener("click", () => {
 //***************AUXILIARY FUNCTIONS**************************
 function setVersion() {
   const docVersion = document.getElementById("version");
-  docVersion.innerHTML = "V 0.0.8D";
+  docVersion.innerHTML = "V 0.0.8E";
 }
 //sets podcast stations, aka main stations with images, like inside europe
 function setpodcastStations() {
