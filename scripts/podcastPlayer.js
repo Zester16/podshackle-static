@@ -60,6 +60,7 @@ class PodcastPlayer {
   }
   play() {
     this.player.play();
+    playerPlayButton.src = "./src/pause.svg";
     this.#setPlayerDisplayTime();
   }
 
