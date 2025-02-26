@@ -4,12 +4,16 @@ function getPodcastDataXML(inputUrl, podcastName) {
     const url = "https://rss.dw.com/xml/podcast_inside-europe";
     const request = new XMLHttpRequest();
     request.open("GET", inputUrl);
+    // request.addEventListener("error", function (error) {
+    //   alert("Radio Fetch Issue:", error);
+    //   console.log("Radio Fetch Issue:", error);
+    // });
+    request.send();
     request.onload = function () {
       //console.log(request.response)
       const podcastList = parsePodcastXML(request.response, podcastName);
       resolve(podcastList);
     };
-    request.send();
   });
 }
 

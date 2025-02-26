@@ -60,16 +60,20 @@ class PodcastPlayer {
   }
   play() {
     this.player.play();
-    playerPlayButton.src = "./src/pause.svg";
+    this.player.addEventListener("error", function (error) {
+      alert("PLayer issues:", error.srcElement.error.message);
+      console.log("player Issues", error, error.srcElement.error.message);
+    });
+    this.#playerButtonPauseIcon();
     this.#setPlayerDisplayTime();
   }
 
   togglePlay() {
     if (this.player.paused) {
-      playerPlayButton.src = "./src/pause.svg";
+      this.#playerButtonPauseIcon();
       this.player.play();
     } else {
-      playerPlayButton.src = "./src/play_arrow.svg";
+      this.#playerButtonPlayIcon();
       this.player.pause();
     }
   }
@@ -107,6 +111,14 @@ class PodcastPlayer {
   }
   #setWhatsNowPlaying(nowPlaying) {
     whatsNowPlayingDiv.innerHTML = nowPlaying;
+  }
+  //sets pause icon on play input button tag
+  #playerButtonPauseIcon() {
+    playerPlayButton.src = "./src/pause.svg";
+  }
+  //sets play icon on play input button tag
+  #playerButtonPlayIcon() {
+    playerPlayButton.src = "./src/play_arrow.svg";
   }
 }
 class ViewHolder {
@@ -153,7 +165,7 @@ closeButton.addEventListener("click", () => {
 //***************AUXILIARY FUNCTIONS**************************
 function setVersion() {
   const docVersion = document.getElementById("version");
-  docVersion.innerHTML = "V 0.0.8G";
+  docVersion.innerHTML = "V 0.0.8H";
 }
 //sets podcast stations, aka main stations with images, like inside europe
 function setpodcastStations() {
