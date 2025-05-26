@@ -70,7 +70,7 @@ function parsePodcastXML(data, podcastName) {
     newPod.title = title;
     newPod.url = url;
     newPod.id = `${podcastName}-${i}`;
-    //console.log(url)
+    //console.log(url);
     podcasts.push(newPod);
   }
   //}
