@@ -29,5 +29,11 @@ const podcastStations = [
     logo: "https://megaphone.imgix.net/podcasts/b84f9932-8174-11e9-bbd8-7f261513f0c9/image/Spotify_The-Journal_Key-Art_3000x3000.jpg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
     url: "https://video-api.wsj.com/podcast/rss/wsj/the-journal",
   },
+  {
+    id: "nyt_daily",
+    name: "The Daily",
+    logo: "https://image.simplecastcdn.com/images/7f2f4c05-9c2f-4deb-82b7-b538062bc22d/73549bf1-94b3-40ff-8aeb-b4054848ec1b/3000x3000/the-daily-album-art-original.jpg?aid=rss_feed",
+    url: "https://feeds.simplecast.com/54nAGcIl",
+  },
 ];
 //https://video-api.wsj.com/podcast/rss/wsj/the-journal
