@@ -14,6 +14,12 @@ const idObject = {
   closeDivButton: "pld_close",
 };
 
+const playerEventListenerObject = {
+  onPause: "pause", //fired when player is paused
+  onStart: "play", //fired when player starts
+  ended: "completed", //fired when player ends
+};
+
 const classListObject = {
   stationImage: "station_image",
   podStationButton: "pod_station_button",
@@ -48,31 +54,54 @@ class PodcastPlayer {
   whatsNowPlaying = document.getElementById(idObject.whatsNowPlaying);
   //playerPlayButton = document.getElementById(idObject.playerPlatButton)
   src = null;
-  playtime = null;
-
+  currentPlaytime = null;
+  title = null;
+  constructor() {
+    this.player.addEventListener(playerEventListenerObject.onPause, () => {
+      this.#playerButtonPlayIcon();
+    });
+    this.player.addEventListener(playerEventListenerObject.onStart, () => {
+      this.#playerButtonPauseIcon();
+    });
+    this.player.addEventListener(playerEventListenerObject.ended, () => {
+      alert(`Podcast ${this.title} is completed`);
+      this.#playerButtonPauseIcon();
+    });
+  }
   setSrc(podcast) {
     footer.style.visibility = "collapse";
     this.player.src = podcast.url;
     this.src = podcast.url;
+    this.title = podcast.title;
     this.#setWhatsNowPlaying(podcast.title);
     this.play();
     footer.style.visibility = "visible";
   }
+
+  //sets error on podcast player. this has to be instantiated outside the class since within class
+  //this is not able to detect this class
+  setPlayerError() {
+    alert("some error happened");
+    this.#playerButtonPauseIcon();
+  }
+  //for playing podcast
   play() {
     this.player.play();
-    this.player.addEventListener("error", function (error) {
-      alert("PLayer issues:", error.srcElement.error.message);
-      console.log("player Issues", error, error.srcElement.error.message);
-      this.setPlayerError();
-    });
-
     this.#playerButtonPauseIcon();
     this.#setPlayerDisplayTime();
   }
 
   //for play button handeling event
+  //TODO: check why when network error happens, the play button frezez aka all settings and data is there yet player does not
+  //run
   togglePlay() {
+    console.log(this.player.paused);
     if (this.player.paused) {
+      console.log(this.player.src, this.player, this.player.currentTime);
+      if (this.player.src === undefined) {
+        this.player.src = this.src;
+        this.player.currentTime = this.currentPlaytime;
+      }
       this.#playerButtonPauseIcon();
       this.player.play();
     } else {
@@ -83,6 +112,7 @@ class PodcastPlayer {
 
   setPlayerTime(percentage) {
     this.player.currentTime = (this.#getPlayTime() * percentage) / 100;
+    this.player.pause();
     this.player.play();
   }
   //auxilary private functions accessible only for class
@@ -106,12 +136,14 @@ class PodcastPlayer {
       //const currentTime =this.getCurrentTime()
       const getTimeP = (this.#getCurrentTime() / this.#getPlayTime()) * 100;
       this.progressBar.style.width = `${getTimeP}%`;
-      const currentPlaytime = this.#setPlayerTimeString(this.#getCurrentTime());
+      this.currentPlaytime = this.#getCurrentTime();
+      const currentPlaytime = this.#setPlayerTimeString(this.currentPlaytime);
       this.audioTime.innerHTML = `${currentPlaytime} / ${this.#setPlayerTimeString(
         this.#getPlayTime()
       )}`;
     }, 100);
   }
+  //whats now playing of a particular podcast
   #setWhatsNowPlaying(nowPlaying) {
     whatsNowPlayingDiv.innerHTML = nowPlaying;
   }
@@ -123,12 +155,8 @@ class PodcastPlayer {
   #playerButtonPlayIcon() {
     playerPlayButton.src = "./src/play_arrow.svg";
   }
-  //sets error on podcast player
-  setPlayerError() {
-    alert("some error happened");
-    this.#playerButtonPlayIcon();
-  }
 }
+//for handeling two page logic
 class ViewHolder {
   _podcastListMasterDiv = document.getElementById(idObject.podcastListDiv);
   constructor() {}
@@ -151,6 +179,13 @@ class ViewHolder {
 const podcastPlayer = new PodcastPlayer();
 const viewHolder = new ViewHolder();
 
+//for setting error handler
+podcastPlayer.player.onerror = function (error) {
+  console.log("player error", error);
+  podcastPlayer.player.pause();
+  //podcastPlayer.player.src = ""; //this is where error is happening
+  podcastPlayer.setPlayerError();
+};
 //for setting scroll state
 meter.addEventListener("click", (event) => {
   const totalWidth = meter.offsetWidth;
@@ -173,7 +208,7 @@ closeButton.addEventListener("click", () => {
 //***************AUXILIARY FUNCTIONS**************************
 function setVersion() {
   const docVersion = document.getElementById("version");
-  docVersion.innerHTML = "V 0.0.8J";
+  docVersion.innerHTML = "V 0.0.8K";
 }
 //sets podcast stations, aka main stations with images, like inside europe
 function setpodcastStations() {
