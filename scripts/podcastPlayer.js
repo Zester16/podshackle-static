@@ -17,6 +17,10 @@ const idObject = {
 const playerEventListenerObject = {
   onPause: "pause", //fired when player is paused
   onStart: "play", //fired when player starts
+  stalled: "stalled",
+  suspend: "suspend", // HTMLMediaElement.networkState is set to HTMLMediaElement.NETWORK_IDLE
+  waiting: "waiting", //event is fired when playback has stopped because of a temporary lack of data.
+  playing: "playing", //fired when player starts to play after loading or pausing or restarting after event has happeneed
   ended: "completed", //fired when player ends
 };
 
@@ -53,9 +57,10 @@ class PodcastPlayer {
   progressBar = document.getElementById(idObject.progressBar);
   whatsNowPlaying = document.getElementById(idObject.whatsNowPlaying);
   //playerPlayButton = document.getElementById(idObject.playerPlatButton)
-  src = null;
-  currentPlaytime = null;
-  title = null;
+  src = null; //sets playtime src
+  currentPlaytime = null; //for setting current time
+  title = null; //for setting title
+  isError = false; //for adding re loading logic when error happens
   constructor() {
     this.player.addEventListener(playerEventListenerObject.onPause, () => {
       this.#playerButtonPlayIcon();
@@ -66,6 +71,16 @@ class PodcastPlayer {
     this.player.addEventListener(playerEventListenerObject.ended, () => {
       alert(`Podcast ${this.title} is completed`);
       this.#playerButtonPauseIcon();
+    });
+    //for logging events specific to player and output error
+    this.player.addEventListener(playerEventListenerObject.stalled, (evt) => {
+      console.log(evt);
+    });
+    this.player.addEventListener(playerEventListenerObject.suspend, (evt) => {
+      console.log(evt);
+    });
+    this.player.addEventListener(playerEventListenerObject.waiting, (evt) => {
+      console.log(evt);
     });
   }
   setSrc(podcast) {
@@ -78,10 +93,14 @@ class PodcastPlayer {
     footer.style.visibility = "visible";
   }
 
+  //temprory function to console logs. needs to be added to a div function storing all logs
+  setErrorLogs(error) {
+    console.log(error, " : ", error.target.error.code);
+  }
   //sets error on podcast player. this has to be instantiated outside the class since within class
   //this is not able to detect this class
   setPlayerError() {
-    alert("some error happened");
+    this.isError = true;
     this.#playerButtonPauseIcon();
   }
   //for playing podcast
@@ -97,10 +116,11 @@ class PodcastPlayer {
   togglePlay() {
     console.log(this.player.paused);
     if (this.player.paused) {
-      console.log(this.player.src, this.player, this.player.currentTime);
-      if (this.player.src === undefined) {
+      //console.log(this.player.src, this.player, this.player.currentTime);
+      if (this.isError) {
         this.player.src = this.src;
         this.player.currentTime = this.currentPlaytime;
+        this.isError = false;
       }
       this.#playerButtonPauseIcon();
       this.player.play();
@@ -208,7 +228,7 @@ closeButton.addEventListener("click", () => {
 //***************AUXILIARY FUNCTIONS**************************
 function setVersion() {
   const docVersion = document.getElementById("version");
-  docVersion.innerHTML = "V 0.0.8K";
+  docVersion.innerHTML = "V 0.0.8L";
 }
 //sets podcast stations, aka main stations with images, like inside europe
 function setpodcastStations() {
