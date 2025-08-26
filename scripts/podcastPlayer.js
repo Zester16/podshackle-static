@@ -1,6 +1,8 @@
 const idObject = {
   footer: "footer",
   meter: "meter",
+  bugDiv: "mypopover",
+  bugListDiv: "bug-list-div",
   progressBar: "progress_bar",
   playButton: "play_button",
   podcastStation: "podcast_station",
@@ -47,6 +49,8 @@ const podcastListDiv = document.getElementById(idObject.podcastList);
 const playerPlayButton = document.getElementById(idObject.playerPlatButton);
 const whatsNowPlayingDiv = document.getElementById(idObject.whatsNowPlaying);
 const closeButton = document.getElementById(idObject.closeDivButton);
+const bugDiv = document.getElementById(idObject.bugDiv);
+const bugListDiv = document.getElementById(idObject.bugListDiv);
 
 let podcastList = [];
 
@@ -75,12 +79,15 @@ class PodcastPlayer {
     //for logging events specific to player and output error
     this.player.addEventListener(playerEventListenerObject.stalled, (evt) => {
       console.log(evt);
+      this.addBugsToList(evt);
     });
     this.player.addEventListener(playerEventListenerObject.suspend, (evt) => {
       console.log(evt);
+      this.addBugsToList(evt);
     });
     this.player.addEventListener(playerEventListenerObject.waiting, (evt) => {
       console.log(evt);
+      this.addBugsToList(evt);
     });
   }
   setSrc(podcast) {
@@ -96,12 +103,14 @@ class PodcastPlayer {
   //temprory function to console logs. needs to be added to a div function storing all logs
   setErrorLogs(error) {
     console.log(error, " : ", error.target.error.code);
+    this.addBugsToList(error);
   }
   //sets error on podcast player. this has to be instantiated outside the class since within class
   //this is not able to detect this class
-  setPlayerError() {
+  setPlayerError(error) {
     this.isError = true;
     this.#playerButtonPauseIcon();
+    this.setErrorLogs(error);
   }
   //for playing podcast
   play() {
@@ -134,6 +143,21 @@ class PodcastPlayer {
     this.player.currentTime = (this.#getPlayTime() * percentage) / 100;
     this.player.pause();
     this.player.play();
+  }
+
+  //appends error to list
+  addBugsToList(data) {
+    const dataDiv = document.createElement("div");
+    //console.log("buglist: ", expand);
+    const date = new Date();
+    dataDiv.innerText =
+      data.type +
+      " " +
+      `${date.getHours()}:${date.getMinutes()}` +
+      " " +
+      this.title;
+    //dataDiv.innerHTML = JSON.stringify(data);
+    bugListDiv.appendChild(dataDiv);
   }
   //auxilary private functions accessible only for class
   #setPlayerTimeString(currentTime) {
@@ -204,7 +228,7 @@ podcastPlayer.player.onerror = function (error) {
   console.log("player error", error);
   podcastPlayer.player.pause();
   //podcastPlayer.player.src = ""; //this is where error is happening
-  podcastPlayer.setPlayerError();
+  podcastPlayer.setPlayerError(error);
 };
 //for setting scroll state
 meter.addEventListener("click", (event) => {
@@ -228,7 +252,7 @@ closeButton.addEventListener("click", () => {
 //***************AUXILIARY FUNCTIONS**************************
 function setVersion() {
   const docVersion = document.getElementById("version");
-  docVersion.innerHTML = "V 0.0.8L";
+  docVersion.innerHTML = "V 0.0.8M";
 }
 //sets podcast stations, aka main stations with images, like inside europe
 function setpodcastStations() {
