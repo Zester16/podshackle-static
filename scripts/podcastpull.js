@@ -1,4 +1,18 @@
-const podcastStub = { date: "", title: "", description: "", url: "", id: "" };
+/**
+ * This is for creating constants for podcast data object
+* podcastId is <podcast name>-<number_of_row>
+*/
+const podcastStub = { date: "", title: "", description: "", url: "", id: "",duration:"" };
+
+/**
+ * function takes in podcast url and name
+ * gets xml file
+ * passes xml data to other function for returning only necessary field
+ *  
+ * @param {*} inputUrl 
+ * @param {*} podcastName 
+ * @returns an array of podcastStub object
+ */
 function getPodcastDataXML(inputUrl, podcastName) {
   return new Promise((resolve, reject) => {
     const url = "https://rss.dw.com/xml/podcast_inside-europe";
@@ -61,8 +75,9 @@ function parsePodcastXML(data, podcastName) {
       xmlDoc.getElementsByTagName("title")[i + 2].lastChild.nodeValue;
     const description =
       xmlDoc.getElementsByTagName("description")[i + 1].lastChild.nodeValue;
-    const url =
+    const url = 
       xmlDoc.getElementsByTagName("enclosure")[i].attributes["url"].nodeValue;
+    const duration = checkAndConvertSecondsToMin(xmlDoc.getElementsByTagName("itunes:duration")[i]?.lastChild?.nodeValue)  
     const newPod = { ...podcastStub };
 
     newPod.date = date;
@@ -70,6 +85,7 @@ function parsePodcastXML(data, podcastName) {
     newPod.title = title;
     newPod.url = url;
     newPod.id = `${podcastName}-${i}`;
+    newPod.duration = duration
     //console.log(url);
     podcasts.push(newPod);
   }
