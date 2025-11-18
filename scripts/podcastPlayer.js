@@ -90,12 +90,12 @@ class PodcastPlayer {
       this.addBugsToList(evt);
     });
   }
-  setSrc(podcast) {
+  setSrc(podcast,podcastStation) {
     footer.style.visibility = "collapse";
     this.player.src = podcast.url;
     this.src = podcast.url;
     this.title = podcast.title;
-    this.#setWhatsNowPlaying(podcast.title);
+    this.#setWhatsNowPlaying(`${podcast.title} by ${podcastStation.name}`);
     this.play();
     footer.style.visibility = "visible";
   }
@@ -286,13 +286,13 @@ function setpodcastStations() {
       let podcastStation = podcastStations[i];
       const url = podcastStation.url;
       //alert(podcast.id)
-      getPodcasts(url);
+      getPodcasts(url,podcastStation);
       //podcastPlayer.play()
     });
   }
 }
-//sets podcasts list aka each episodes
-async function getPodcasts(url) {
+//sets podcasts list aka each episodes, adds event listener to each button to play
+async function getPodcasts(url,podcastStation) {
   podcastList = await getPodcastDataXML(url);
   podcastListDiv.replaceChildren(); //removes old podccasts. needs to be checked in other browsers
   podcastList.forEach((podcast) => {
@@ -344,7 +344,7 @@ async function getPodcasts(url) {
       let podcast = podcastList[i];
       const url = podcast.url;
       //alert(podcast.id)
-      podcastPlayer.setSrc(podcast);
+      podcastPlayer.setSrc(podcast,podcastStation);
       //podcastPlayer.play()
     });
   }

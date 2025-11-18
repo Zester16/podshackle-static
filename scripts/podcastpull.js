@@ -84,7 +84,8 @@ function parsePodcastXML(data, podcastName) {
     newPod.description = description;
     newPod.title = title;
     newPod.url = url;
-    newPod.id = `${podcastName}-${i}`;
+    newPod.id = createPodcastKey(date,title,podcastName)
+    // old key logic`${podcastName}-${i}`;
     newPod.duration = duration
     //console.log(url);
     podcasts.push(newPod);

@@ -31,3 +31,17 @@ function setMinutesPrecision(inputInSeconds){
 
     return `${hours}:${hourMinutes}`
 }
+
+//creates podcase key
+/**
+ * 
+ * @param {*} datePublished : date podcast was published
+ * @param {*} title : podcast title
+ * @param {*} podcast : podcast name
+ */
+function createPodcastKey(datePublished,title,podcast){
+    const preId = `${datePublished}-${title}-${podcast}`
+    const encoder = new TextEncoder();
+    const bytes = encoder.encode(preId);
+    return Array.from(bytes).map(byte => byte.toString(16).padStart(2, '0')).join('');
+}
