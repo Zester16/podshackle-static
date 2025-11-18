@@ -1,0 +1,47 @@
+//utility files
+
+//gets time as input from radio stream and converts id : is not present
+function checkAndConvertSecondsToMin(input){
+
+    if(!input){
+        return ""
+    }
+
+    if(input.includes(":")){
+        return input
+    }
+
+    const seconds =  (input%60).toPrecision(2)
+    const minutes = setMinutesPrecision(input)
+    return `${minutes}:${seconds} - ${input}`
+}
+
+//gets time in minute from above function and sets hour and minutes
+function setMinutesPrecision(inputInSeconds){
+    const minutes = Math.trunc(inputInSeconds/60)
+    if(minutes<10){
+        return minutes.toPrecision(1)
+    }
+    if(minutes<60){
+        return minutes.toPrecision(2)
+    }
+
+    const hours = (minutes/60).toPrecision(1)
+    const hourMinutes = (input%60).toPrecision(2)
+
+    return `${hours}:${hourMinutes}`
+}
+
+//creates podcase key
+/**
+ * 
+ * @param {*} datePublished : date podcast was published
+ * @param {*} title : podcast title
+ * @param {*} podcast : podcast name
+ */
+function createPodcastKey(datePublished,title,podcast){
+    const preId = `${datePublished}-${title}-${podcast}`
+    const encoder = new TextEncoder();
+    const bytes = encoder.encode(preId);
+    return Array.from(bytes).map(byte => byte.toString(16).padStart(2, '0')).join('');
+}
