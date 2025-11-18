@@ -12,13 +12,13 @@ function checkAndConvertSecondsToMin(input){
     }
 
     const seconds =  (input%60).toPrecision(2)
-    const minutes = setMinutesPrecision((input/60))
+    const minutes = setMinutesPrecision(input)
     return `${minutes}:${seconds} - ${input}`
 }
 
 //gets time in minute from above function and sets hour and minutes
-function setMinutesPrecision(minutes){
-
+function setMinutesPrecision(inputInSeconds){
+    const minutes = Math.trunc(inputInSeconds/60)
     if(minutes<10){
         return minutes.toPrecision(1)
     }

@@ -252,7 +252,7 @@ closeButton.addEventListener("click", () => {
 //***************AUXILIARY FUNCTIONS**************************
 function setVersion() {
   const docVersion = document.getElementById("version");
-  docVersion.innerHTML = "V 0.0.10A";
+  docVersion.innerHTML = "V 0.0.10B";
 }
 //sets podcast stations, aka main stations with images, like inside europe
 function setpodcastStations() {
