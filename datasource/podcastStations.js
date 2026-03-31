@@ -50,6 +50,13 @@ const podcastStations = [
     url: "https://feeds.megaphone.fm/TSO2898809644",
     siteUrl:"https://www.anz.com/institutional/five-in-five-podcast/"
   },
+    {
+    id: "reuters_morning_bid",
+    name: "Reuters Morning Bid",
+    logo: "https://megaphone.imgix.net/podcasts/8d7badb4-26b3-11f0-a040-1fe12f445fb2/image/d01020d1288700b6588ee45cac9e3bc0.jpg?ixlib=rails-4.3.1&max-w=3000&max-h=3000&fit=crop&auto=format,compress",
+    url: "https://feeds.megaphone.fm/THRH7907651499",
+    siteUrl:"https://www.reuters.com/podcasts/reuters-morning-bid/"
+  },
   
 ];
 //https://video-api.wsj.com/podcast/rss/wsj/the-journal
