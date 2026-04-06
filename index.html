@@ -127,13 +127,9 @@
       margin: 5px;
     }
 
-    #whats_now_playing_div{
-      display: flex;
-      align-items: center;
-      align-content: center;
-    }
-    #whats_now_playing_logo{
-      max-width: 30px;
+   
+    #whats_now_playing_logo {
+      max-width: 50px;
       border-radius: 10%;
     }
 
@@ -203,16 +199,14 @@
 
     <div id="podcast_player">
       <div id="current_time"></div>
-      <div id="whats_now_playing_div">
-        <img id="whats_now_playing_logo" src="">
-        <div id="whats_now_playing"></div>
-        
+      <div id="whats_now_playing">
       </div>
-
     </div>
+
     <div>
       <input id="player_play_button" rel="preload" type="image" src="./src/pause.svg" />
       <input id="player_bug_button" rel="preload" type="image" src="./src/bug.svg" popovertarget="mypopover" />
+      <img id="whats_now_playing_logo" src="">
     </div>
   </div>
 
