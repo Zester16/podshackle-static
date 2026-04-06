@@ -12,6 +12,7 @@ const idObject = {
   currentTime: "current_time",
   playerPlatButton: "player_play_button",
   whatsNowPlaying: "whats_now_playing",
+  whatsNowPlayingLogo:"whats_now_playing_logo",
   podcastListDiv: "podcast_list_div",
   closeDivButton: "pld_close",
 };
@@ -48,6 +49,7 @@ const podcastStationDiv = document.getElementById(idObject.podcastStation);
 const podcastListDiv = document.getElementById(idObject.podcastList);
 const playerPlayButton = document.getElementById(idObject.playerPlatButton);
 const whatsNowPlayingDiv = document.getElementById(idObject.whatsNowPlaying);
+const whatsNowPlayingLogoDiv = document.getElementById(idObject.whatsNowPlayingLogo);
 const closeButton = document.getElementById(idObject.closeDivButton);
 const bugDiv = document.getElementById(idObject.bugDiv);
 const bugListDiv = document.getElementById(idObject.bugListDiv);
@@ -96,6 +98,7 @@ class PodcastPlayer {
     this.src = podcast.url;
     this.title = podcast.title;
     this.#setWhatsNowPlaying(`${podcast.title} by ${podcastStation.name}`);
+    this.#setWhatsNowPlayingLogo(podcastStation.logo)
     this.play();
     footer.style.visibility = "visible";
   }
@@ -191,6 +194,10 @@ class PodcastPlayer {
   #setWhatsNowPlaying(nowPlaying) {
     whatsNowPlayingDiv.innerHTML = nowPlaying;
   }
+
+  #setWhatsNowPlayingLogo(logo){
+    whatsNowPlayingLogoDiv.src = logo
+  }
   //sets pause icon on play input button tag
   #playerButtonPauseIcon() {
     playerPlayButton.src = "./src/pause.svg";
@@ -285,16 +292,19 @@ function setpodcastStations() {
     podStationButton[i].addEventListener("click", (event) => {
       let podcastStation = podcastStations[i];
       const url = podcastStation.url;
+      const stationLogo = podcastStation.logo
+      const stationName = podcastStation.name
       //alert(podcast.id)
-      getPodcasts(url,podcastStation);
+      getPodcasts(url,podcastStation,stationLogo,stationName);
       //podcastPlayer.play()
     });
   }
 }
-//sets podcasts list aka each episodes, adds event listener to each button to play
-async function getPodcasts(url,podcastStation) {
+//sets podcasts header(Aka which podcastis it, list aka each episodes, adds event listener to each button to play
+async function getPodcasts(url,podcastStation,stationLogo,stationName) {
   podcastList = await getPodcastDataXML(url);
   podcastListDiv.replaceChildren(); //removes old podccasts. needs to be checked in other browsers
+  
   podcastList.forEach((podcast) => {
     const newDiv = document.createElement("div");
     const header = document.createElement("h2");
