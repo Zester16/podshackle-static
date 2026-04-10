@@ -12,6 +12,7 @@ const idObject = {
   currentTime: "current_time",
   playerPlatButton: "player_play_button",
   whatsNowPlaying: "whats_now_playing",
+  whatsNowPlayingLogo:"whats_now_playing_logo",
   podcastListDiv: "podcast_list_div",
   closeDivButton: "pld_close",
 };
@@ -48,6 +49,7 @@ const podcastStationDiv = document.getElementById(idObject.podcastStation);
 const podcastListDiv = document.getElementById(idObject.podcastList);
 const playerPlayButton = document.getElementById(idObject.playerPlatButton);
 const whatsNowPlayingDiv = document.getElementById(idObject.whatsNowPlaying);
+const whatsNowPlayingLogoDiv = document.getElementById(idObject.whatsNowPlayingLogo);
 const closeButton = document.getElementById(idObject.closeDivButton);
 const bugDiv = document.getElementById(idObject.bugDiv);
 const bugListDiv = document.getElementById(idObject.bugListDiv);
@@ -64,7 +66,10 @@ class PodcastPlayer {
   src = null; //sets playtime src
   currentPlaytime = null; //for setting current time
   title = null; //for setting title
+  logo=null
   isError = false; //for adding re loading logic when error happens
+  nowPlayingKey = "now_playing"
+  nowPlayingStruct = {title:"",logo:"",currentPlaytime:0,src:'',stationName:'',displayTitle:''}
   constructor() {
     this.player.addEventListener(playerEventListenerObject.onPause, () => {
       this.#playerButtonPlayIcon();
@@ -89,17 +94,49 @@ class PodcastPlayer {
       console.log(evt);
       this.addBugsToList(evt);
     });
+
+    const anythingPlaying = this.#getLastPlayedInLocalStorage()
+    if(anythingPlaying){
+      this.setSrcForPreviousPlay(anythingPlaying)
+    }
   }
+  //for setting system when system is clicked for first time
   setSrc(podcast,podcastStation) {
     footer.style.visibility = "collapse";
     this.player.src = podcast.url;
     this.src = podcast.url;
     this.title = podcast.title;
-    this.#setWhatsNowPlaying(`${podcast.title} by ${podcastStation.name}`);
+    const displayTitle=`${podcast.title} by ${podcastStation.name}`
+    this.#setWhatsNowPlaying(displayTitle);
+    this.#setWhatsNowPlayingLogo(podcastStation.logo)
+    this.nowPlayingStruct.logo=podcastStation.logo
+    this.nowPlayingStruct.src=podcast.url;
+    this.nowPlayingStruct.title=this.title;
+    this.nowPlayingStruct.stationName=podcastStation.name;
+    this.nowPlayingStruct.displayTitle = displayTitle;
+    this.#createNowPlayingStorage();
     this.play();
     footer.style.visibility = "visible";
   }
 
+  setSrcForPreviousPlay(anythingPlaying){
+    footer.style.visibility = "collapse";
+    this.player.src = anythingPlaying.src;
+    this.src = anythingPlaying.src;
+    this.title = anythingPlaying.title;
+    this.currentPlaytime = anythingPlaying.currentPlaytime;
+    this.#setWhatsNowPlaying(anythingPlaying.displayTitle);
+    this.#setWhatsNowPlayingLogo(anythingPlaying.logo);
+    this.#setPlayerWhenPageRefreshes(anythingPlaying.currentPlaytime);
+    
+    // commenting now playing struct as its not required
+    //this.nowPlayingStruct.logo=anythingPlaying.logo
+    //this.nowPlayingStruct.src=anythingPlaying.src;
+    //this.nowPlayingStruct.title=this.title;
+    //this.#createNowPlayingStorage();
+    //this.play();
+    footer.style.visibility = "visible";
+  }
   //temprory function to console logs. needs to be added to a div function storing all logs
   setErrorLogs(error) {
     console.log(error, " : ", error.target.error.code);
@@ -138,13 +175,20 @@ class PodcastPlayer {
       this.player.pause();
     }
   }
-
+  //primarly used when seek is is set via on click listner
   setPlayerTime(percentage) {
     this.player.currentTime = (this.#getPlayTime() * percentage) / 100;
     this.player.pause();
     this.player.play();
   }
-
+  // Not sure if this modularization of function is worth it
+  #setPlayerWhenPageRefreshes(currentTime){
+    this.currentPlaytime = currentTime
+    this.player.currentTime = currentTime;
+    this.#setPlayerDisplayTime();
+    this.player.pause();
+    this.#playerButtonPlayIcon();
+  }
   //appends error to list
   addBugsToList(data) {
     const dataDiv = document.createElement("div");
@@ -178,6 +222,7 @@ class PodcastPlayer {
   #setPlayerDisplayTime() {
     this.playerTimeId = setInterval(() => {
       //const currentTime =this.getCurrentTime()
+      this.#updateNowPlayingInLocalStore(this.currentPlaytime)
       const getTimeP = (this.#getCurrentTime() / this.#getPlayTime()) * 100;
       this.progressBar.style.width = `${getTimeP}%`;
       this.currentPlaytime = this.#getCurrentTime();
@@ -191,6 +236,10 @@ class PodcastPlayer {
   #setWhatsNowPlaying(nowPlaying) {
     whatsNowPlayingDiv.innerHTML = nowPlaying;
   }
+
+  #setWhatsNowPlayingLogo(logo){
+    whatsNowPlayingLogoDiv.src = logo
+  }
   //sets pause icon on play input button tag
   #playerButtonPauseIcon() {
     playerPlayButton.src = "./src/pause.svg";
@@ -198,6 +247,36 @@ class PodcastPlayer {
   //sets play icon on play input button tag
   #playerButtonPlayIcon() {
     playerPlayButton.src = "./src/play_arrow.svg";
+  }
+  //for setting now playing
+  #createNowPlayingStorage(){
+    sessionStorage.setItem(this.nowPlayingKey,JSON.stringify(this.nowPlayingStruct))
+  }
+  //every second update
+  #updateNowPlayingInLocalStore(currentTime){
+    const nowPlayingStr=sessionStorage.getItem(this.nowPlayingKey)
+    if(nowPlayingStr){
+      const nowPlaying = JSON.parse(nowPlayingStr)
+      nowPlaying.currentPlaytime = currentTime;
+      sessionStorage.setItem(this.nowPlayingKey,JSON.stringify(nowPlaying))
+      //console.log(nowPlaying)
+    }
+    else{
+      console.log("nothing playing right now")
+    }
+  }
+  #removeNowPlayingInLocalStore(){
+
+  }
+ 
+  #getLastPlayedInLocalStorage(){
+      const nowPlayingStr=sessionStorage.getItem(this.nowPlayingKey)
+
+      if(nowPlayingStr){
+        return JSON.parse(nowPlayingStr)
+      }else{
+        null
+      }
   }
 }
 //for handeling two page logic
@@ -252,7 +331,7 @@ closeButton.addEventListener("click", () => {
 //***************AUXILIARY FUNCTIONS**************************
 function setVersion() {
   const docVersion = document.getElementById("version");
-  docVersion.innerHTML = "V 0.0.11B";
+  docVersion.innerHTML = "V 0.0.11D";
 }
 //sets podcast stations, aka main stations with images, like inside europe
 function setpodcastStations() {
@@ -285,16 +364,19 @@ function setpodcastStations() {
     podStationButton[i].addEventListener("click", (event) => {
       let podcastStation = podcastStations[i];
       const url = podcastStation.url;
+      const stationLogo = podcastStation.logo
+      const stationName = podcastStation.name
       //alert(podcast.id)
-      getPodcasts(url,podcastStation);
+      getPodcasts(url,podcastStation,stationLogo,stationName);
       //podcastPlayer.play()
     });
   }
 }
-//sets podcasts list aka each episodes, adds event listener to each button to play
-async function getPodcasts(url,podcastStation) {
+//sets podcasts header(Aka which podcastis it, list aka each episodes, adds event listener to each button to play
+async function getPodcasts(url,podcastStation,stationLogo,stationName) {
   podcastList = await getPodcastDataXML(url);
   podcastListDiv.replaceChildren(); //removes old podccasts. needs to be checked in other browsers
+  
   podcastList.forEach((podcast) => {
     const newDiv = document.createElement("div");
     const header = document.createElement("h2");
