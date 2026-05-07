@@ -250,15 +250,15 @@ class PodcastPlayer {
   }
   //for setting now playing
   #createNowPlayingStorage(){
-    sessionStorage.setItem(this.nowPlayingKey,JSON.stringify(this.nowPlayingStruct))
+    localStorage.setItem(this.nowPlayingKey,JSON.stringify(this.nowPlayingStruct))
   }
   //every second update
   #updateNowPlayingInLocalStore(currentTime){
-    const nowPlayingStr=sessionStorage.getItem(this.nowPlayingKey)
+    const nowPlayingStr=localStorage.getItem(this.nowPlayingKey)
     if(nowPlayingStr){
       const nowPlaying = JSON.parse(nowPlayingStr)
       nowPlaying.currentPlaytime = currentTime;
-      sessionStorage.setItem(this.nowPlayingKey,JSON.stringify(nowPlaying))
+      localStorage.setItem(this.nowPlayingKey,JSON.stringify(nowPlaying))
       //console.log(nowPlaying)
     }
     else{
@@ -270,7 +270,7 @@ class PodcastPlayer {
   }
  
   #getLastPlayedInLocalStorage(){
-      const nowPlayingStr=sessionStorage.getItem(this.nowPlayingKey)
+      const nowPlayingStr=localStorage.getItem(this.nowPlayingKey)
 
       if(nowPlayingStr){
         return JSON.parse(nowPlayingStr)
@@ -331,7 +331,7 @@ closeButton.addEventListener("click", () => {
 //***************AUXILIARY FUNCTIONS**************************
 function setVersion() {
   const docVersion = document.getElementById("version");
-  docVersion.innerHTML = "V 0.0.11D";
+  docVersion.innerHTML = "V 0.0.11E";
 }
 //sets podcast stations, aka main stations with images, like inside europe
 function setpodcastStations() {
