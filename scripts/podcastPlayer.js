@@ -95,12 +95,13 @@ class PodcastPlayer {
       this.addBugsToList(evt);
     });
 
+    //checks if any current podcast is playing
     const anythingPlaying = this.#getLastPlayedInLocalStorage()
     if(anythingPlaying){
       this.setSrcForPreviousPlay(anythingPlaying)
     }
   }
-  //for setting system when system is clicked for first time
+  //for setting system when podcast is clicked play from selection menu
   setSrc(podcast,podcastStation) {
     footer.style.visibility = "collapse";
     this.player.src = podcast.url;
@@ -114,11 +115,12 @@ class PodcastPlayer {
     this.nowPlayingStruct.title=this.title;
     this.nowPlayingStruct.stationName=podcastStation.name;
     this.nowPlayingStruct.displayTitle = displayTitle;
+    this.player.currentTime = 0; //when network is bad, old stored time of player is taken by system
     this.#createNowPlayingStorage();
     this.play();
     footer.style.visibility = "visible";
   }
-
+  //gets triggered when at time of page refresh, system checks cache and if anything is present, is loaded here
   setSrcForPreviousPlay(anythingPlaying){
     footer.style.visibility = "collapse";
     this.player.src = anythingPlaying.src;
@@ -189,6 +191,7 @@ class PodcastPlayer {
     this.player.pause();
     this.#playerButtonPlayIcon();
   }
+  
   //appends error to list
   addBugsToList(data) {
     const dataDiv = document.createElement("div");
@@ -331,7 +334,7 @@ closeButton.addEventListener("click", () => {
 //***************AUXILIARY FUNCTIONS**************************
 function setVersion() {
   const docVersion = document.getElementById("version");
-  docVersion.innerHTML = "V 0.0.11E";
+  docVersion.innerHTML = "V 0.0.11F";
 }
 //sets podcast stations, aka main stations with images, like inside europe
 function setpodcastStations() {
